@@ -23,12 +23,14 @@ public:
 			0, CREATE_ALWAYS, FILE_FLAG_OVERLAPPED, 0);
 
 		if (Arquivo == INVALID_HANDLE_VALUE)
-			cout << "Não foi possível criar o arquivo, verifique o código de erro: " << GetLastError();
+		{
+			cout << "NÃ£o foi possÃ­vel criar o arquivo, verifique o cÃ³digo de erro: " << GetLastError();
+		}
 		else
 		{
-			//Esta é uma função assíncrona.
-			//Permissão declarada em CreateFile usando o sinalizador FILE_FLAG_OVERLAPPED, para sinalizar uma função assíncrona.
-			//OVERLAPPED é inicializado primeiro antes de chamar a função assíncrona.
+			//Esta Ã© uma funÃ§Ã£o assÃ­ncrona.
+			//PermissÃ£o declarada em CreateFile usando o sinalizador FILE_FLAG_OVERLAPPED, para sinalizar uma funÃ§Ã£o assÃ­ncrona.
+			//OVERLAPPED Ã© inicializado primeiro antes de chamar a funÃ§Ã£o assÃ­ncrona.
 			Assincrona.hEvent = CreateEvent(0, true, false, 0);
 
 			BOOL Result;
@@ -43,15 +45,15 @@ public:
 				}
 				else
 				{
-					cout << "Não foi possível obter status de tarefa assíncrona." << GetLastError();
+					cout << "NÃ£o foi possÃ­vel obter status de tarefa assÃ­ncrona." << GetLastError();
 				}
 			}
 			else
 			{
-				cout << "Não foi possível escrever em arquivo." << GetLastError();
+				cout << "NÃ£o foi possÃ­vel escrever em arquivo." << GetLastError();
 			}
 
-			//O mesmo arquivo será usado para as outras tarefas, portanto, só feche o identificador quando não for mais necessário.
+			//O mesmo arquivo serÃ¡ usado para as outras tarefas, portanto, sÃ³ feche o identificador quando nÃ£o for mais necessÃ¡rio.
 			//CloseHandle(Arquivo);
 		}
 	}
@@ -60,8 +62,8 @@ public:
 	{
 		char DadosLidos[MAX_PATH];
 
-		//Esta é uma função assíncrona.
-		//Permissão declarada em CreateFile usando o sinalizador FILE_FLAG_OVERLAPPED, para sinalizar uma função assíncrona.
+		//Esta Ã© uma funÃ§Ã£o assÃ­ncrona.
+		//PermissÃ£o declarada em CreateFile usando o sinalizador FILE_FLAG_OVERLAPPED, para sinalizar uma funÃ§Ã£o assÃ­ncrona.
 		BOOL Result;
 		Result = ReadFile(Arquivo, DadosLidos, MAX_PATH, 0, &Assincrona);
 		if (GetLastError() == ERROR_IO_PENDING)
@@ -74,7 +76,7 @@ public:
 			}
 			else
 			{
-				cout << "Ocorreu uma falha durante a operação de leitura." << GetLastError();
+				cout << "Ocorreu uma falha durante a operaÃ§Ã£o de leitura." << GetLastError();
 			}
 		}
 	}
@@ -83,16 +85,16 @@ public:
 	{
 		BOOL Result;
 
-		//Esta é uma função de cópia simples, sem o método assíncrono e com outras opções avançadas para o gerenciamento.
-		//Use CopyFileEx ou CopyFile2 para operações mais complexas e com opções de escolha do usuário.
+		//Esta Ã© uma funÃ§Ã£o de cÃ³pia simples, sem o mÃ©todo assÃ­ncrono e com outras opÃ§Ãµes avanÃ§adas para o gerenciamento.
+		//Use CopyFileEx ou CopyFile2 para operaÃ§Ãµes mais complexas e com opÃ§Ãµes de escolha do usuÃ¡rio.
 		Result = CopyFile(Local.c_str(), NovoLocal.c_str(), false);
 		if (Result == TRUE)
 		{
-			cout << "A operação de cópia foi concluída com sucesso.";
+			cout << "A operaÃ§Ã£o de cÃ³pia foi concluÃ­da com sucesso.";
 		}
 		else
 		{
-			cout << "Ocorreu um erro durante a operação de cópia." << GetLastError();
+			cout << "Ocorreu um erro durante a operaÃ§Ã£o de cÃ³pia." << GetLastError();
 		}
 	}
 
@@ -100,8 +102,8 @@ public:
 	{
 		BOOL Result;
 
-		//O sinalizador MOVEFILE_REPLACE_EXISTING irá substituir o arquivo se tiver com o mesmo nome e extensão.
-		//A função irá retornar status apenas se o arquivo for completamente movido, conforme sinalizado em MOVEFILE_WRITE_THROUGH.
+		//O sinalizador MOVEFILE_REPLACE_EXISTING irÃ¡ substituir o arquivo se tiver com o mesmo nome e extensÃ£o.
+		//A funÃ§Ã£o irÃ¡ retornar status apenas se o arquivo for completamente movido, conforme sinalizado em MOVEFILE_WRITE_THROUGH.
 		Result = MoveFileEx(Local.c_str(), NovoLocal.c_str(), MOVEFILE_REPLACE_EXISTING| MOVEFILE_WRITE_THROUGH);
 		if (Result == TRUE)
 		{
@@ -109,7 +111,7 @@ public:
 		}
 		else
 		{
-			cout << "Ocorreu um erro durante a operação." << GetLastError();
+			cout << "Ocorreu um erro durante a operaÃ§Ã£o." << GetLastError();
 		}
 	}
 
@@ -117,7 +119,7 @@ public:
 	{
 		LARGE_INTEGER Tamanho;
 
-		//Usamos o identificador obtido em CreateFile para esta operação.
+		//Usamos o identificador obtido em CreateFile para esta operaÃ§Ã£o.
 		GetFileSizeEx(Arquivo, &Tamanho);
 
 		long CalcularMB = (double)Tamanho.QuadPart / (1024 * 1024);
@@ -152,17 +154,17 @@ public:
 
 int main()
 {
-	cout << "O assistente está efetuando operações em um arquivo...";
+	cout << "O assistente estÃ¡ efetuando operaÃ§Ãµes em um arquivo...";
 
 	wstring LocalPadrao = L"C:\\Teste.txt";
 
-	//Poderá usar qualquer função.
+	//PoderÃ¡ usar qualquer funÃ§Ã£o.
 	Funcoes.CriarArquivo(LocalPadrao, "Texto1");
 	Funcoes.LerArquivo(LocalPadrao);
 	Funcoes.ObterTamanhoDoArquivo();
 	Funcoes.CopiarArquivo(LocalPadrao, L"C:\\TESTE\\Teste.txt");
 	Funcoes.MoverArquivo(L"C:\\TESTE\\Teste.txt", LocalPadrao);
-	Funcoes.DeletarArquivo(LocalPadrao);//Deletar o arquivo após todas as operações terem sido concluídas.
+	Funcoes.DeletarArquivo(LocalPadrao);//Deletar o arquivo apÃ³s todas as operaÃ§Ãµes terem sido concluÃ­das.
 
 	system("pause");
 }
