@@ -122,8 +122,8 @@ public:
 		//Usamos o identificador obtido em CreateFile para esta operação.
 		GetFileSizeEx(Arquivo, &Tamanho);
 
-		long CalcularMB = (double)Tamanho.QuadPart / (1024 * 1024);
-		long CalcularGB = (double)Tamanho.QuadPart / (1024 * 1024 * 1024);
+		LONGLONG CalcularMB = (double)Tamanho.QuadPart / (1024 * 1024);
+		LONGLONG CalcularGB = (double)Tamanho.QuadPart / (1024 * 1024 * 1024);
 
 		if (CalcularGB > 0 == true)
 		{
